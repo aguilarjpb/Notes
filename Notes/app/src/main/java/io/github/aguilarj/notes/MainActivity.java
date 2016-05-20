@@ -11,17 +11,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    ArrayList<Notebook> notebooks;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         RelativeLayout main_layout = (RelativeLayout) findViewById(R.id.main_layout);
-        DataHandler data = new DataHandler(MainActivity.this);
-        notebooks = data.getNotebooks();
+        Data data = Data.getInstance(MainActivity.this);
+        ArrayList<Notebook> notebooks = data.getNotebooks();
 
         if (!notebooks.isEmpty()) {
             RecyclerView rvNotebooks = new RecyclerView(this);

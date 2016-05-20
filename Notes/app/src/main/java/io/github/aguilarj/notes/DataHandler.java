@@ -27,9 +27,9 @@ public class DataHandler {
 
     }
 
-    public DataHandler(Context c) {
-        currentContext = c;
-        dataPath = c.getFilesDir().toString();
+    public DataHandler(Context context) {
+        currentContext = context;
+        dataPath = context.getFilesDir().toString();
         mNotebooks = new ArrayList<>();
     }
 

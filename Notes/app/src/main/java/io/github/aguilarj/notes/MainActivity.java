@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,14 +19,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView rvNotebooks = (RecyclerView) findViewById(R.id.rvNotebooks);
-        notebooks = parseUserData(); // TODO: 19/05/16  Parser
+        RelativeLayout main_layout = (RelativeLayout) findViewById(R.id.main_layout);
+        DataHandler data = new DataHandler(MainActivity.this);
+        notebooks = data.getNotebooks();
+
         if (notebooks != null) {
+            RecyclerView rvNotebooks = new RecyclerView(this);
+
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            rvNotebooks.setLayoutParams(params);
+
             NotebooksAdapter adapter = new NotebooksAdapter(notebooks);
             rvNotebooks.setAdapter(adapter);
             rvNotebooks.setLayoutManager(new LinearLayoutManager(this));
+
+            main_layout.addView(rvNotebooks);
         } else {
-            // TODO: 19/05/16  Show a message asking the user to create a new notebook
+            TextView CreateNew = new TextView(this);
+
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            CreateNew.setLayoutParams(params);
+            CreateNew.setText("No notebooks by the moment. Create a new one!");
+
+            main_layout.addView(CreateNew);
         }
 
     }

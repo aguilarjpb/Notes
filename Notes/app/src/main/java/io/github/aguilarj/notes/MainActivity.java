@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         DataHandler data = new DataHandler(MainActivity.this);
         notebooks = data.getNotebooks();
 
-        if (notebooks != null) {
+        if (!notebooks.isEmpty()) {
             RecyclerView rvNotebooks = new RecyclerView(this);
 
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(

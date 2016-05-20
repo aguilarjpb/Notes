@@ -42,7 +42,9 @@ public class DataHandler {
 
     public ArrayList<Notebook> getNotebooks() {
         File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
-        String notebooksString = "";
+        String notebooksString = new String();
+
+
         if (!notebooksFile.exists()) {
             notebooksFile = new File(dataPath, FileNames.NOTEBOOKS);
             try {
@@ -50,28 +52,30 @@ public class DataHandler {
             } catch (IOException exception) {
                 errorMessage("Error while creating notebooks' file: " + exception.toString());
             }
-            return mNotebooks = null;
+
         }
 
         try {
             notebooksString = Files.toString(notebooksFile, Charsets.UTF_8);
         } catch (IOException exception) {
             errorMessage("Error while trying to open notebooks: " + exception.toString());
-
         }
-        try {
-            JSONArray data = new JSONArray(notebooksString);
 
-            for (int i = 0; i != data.length(); ++i) {
-                JSONObject rawNotebook = data.getJSONObject(i);
-                Notebook notebook = new Notebook(
-                        rawNotebook.getString("title"), rawNotebook.getString("description"));
+        if (!notebooksString.equals("Empty")) {
+            try {
+                JSONArray data = new JSONArray(notebooksString);
 
-                mNotebooks.add(notebook);
+                for (int i = 0; i != data.length(); ++i) {
+                    JSONObject rawNotebook = data.getJSONObject(i);
+                    Notebook notebook = new Notebook(
+                            rawNotebook.getString("title"), rawNotebook.getString("description"));
+
+                    mNotebooks.add(notebook);
+                }
+
+            } catch (JSONException exception) {
+                errorMessage("Error while parsing notebooks' data: " + exception.toString());
             }
-
-        } catch (JSONException exception) {
-            errorMessage("Error while parsing notebooks' data: " + exception.toString());
         }
         return mNotebooks;
     }

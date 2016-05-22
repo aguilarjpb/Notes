@@ -22,6 +22,7 @@ public class DataHandler {
     private Context currentContext;
     private ArrayList<Notebook> mNotebooks;
     private String dataPath;
+    private Boolean isLoaded;
     private class FileNames {
         public static final String NOTEBOOKS = "/Notebooks.txt";
 
@@ -31,16 +32,18 @@ public class DataHandler {
         currentContext = context;
         dataPath = context.getFilesDir().toString();
         mNotebooks = new ArrayList<>();
+        isLoaded = false;
     }
 
-    public void errorMessage(String error) {
+    private void errorMessage(String error) {
+        // TODO: 22/05/16 Look for a proper way of dealing with errors
         AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
         builder.setMessage(error);
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-    public ArrayList<Notebook> getNotebooks() {
+    private void loadNotebooks() {
         File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
         String notebooksString = new String();
 
@@ -76,6 +79,13 @@ public class DataHandler {
             } catch (JSONException exception) {
                 errorMessage("Error while parsing notebooks' data: " + exception.toString());
             }
+        }
+    }
+
+    public ArrayList<Notebook> getNotebooks() {
+        if (!isLoaded) {
+            loadNotebooks();
+            isLoaded = true;
         }
         return mNotebooks;
     }

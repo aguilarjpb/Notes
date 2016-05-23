@@ -1,3 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Notes</string>
+    <string name="no_notebooks_message">No notebooks by the moment. Create a new one!</string>
+
 </resources>
+

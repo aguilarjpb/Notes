@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Notes</string>
+
     <string name="no_notebooks_message">No notebooks by the moment. Create a new one!</string>
+
+    <string name="add_notebook_title">Title</string>
+    <string name="add_notebook_description">Description</string>
+    <string name="add_notebook_add_button">Add</string>
+
+    <string name="action_create">Create</string>
+    <string name="action_settings">Settings</string>
+
+
+
 
 </resources>
 

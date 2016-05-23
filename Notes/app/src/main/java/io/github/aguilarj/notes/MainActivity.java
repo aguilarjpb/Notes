@@ -1,12 +1,15 @@
 package io.github.aguilarj.notes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,29 +23,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RelativeLayout main_layout = (RelativeLayout) findViewById(R.id.main_layout);
+        Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(mainToolbar);
+
+        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
         RecyclerView rvNotebooks = (RecyclerView) findViewById(R.id.notebooks_list);
+        TextView noNotebooks = (TextView) findViewById(R.id.no_notebooks);
 
         Data data = Data.getInstance(MainActivity.this);
         ArrayList<Notebook> notebooks = data.getNotebooks();
 
-        Preconditions.checkArgument(rvNotebooks != null && main_layout != null);
+        Preconditions.checkArgument(rvNotebooks != null && mainLayout != null && noNotebooks != null);
 
         if (!notebooks.isEmpty()) {
+            noNotebooks.setVisibility(View.INVISIBLE);
             NotebooksAdapter adapter = new NotebooksAdapter(notebooks);
             rvNotebooks.setAdapter(adapter);
             rvNotebooks.setLayoutManager(new LinearLayoutManager(this));
 
         } else {
             rvNotebooks.setVisibility(View.INVISIBLE);
-
-            TextView createNew = new TextView(this);
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            createNew.setLayoutParams(params);
-            createNew.setText(R.string.no_notebooks_message);
-
-            main_layout.addView(createNew);
+            noNotebooks.setText(R.string.no_notebooks_message);
         }
 
         FloatingActionButton add_notebook_FAB = (FloatingActionButton) findViewById(R.id.add_notebook_FAB);
@@ -50,8 +51,25 @@ public class MainActivity extends AppCompatActivity {
         add_notebook_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 23/05/16 Implement an activity to add a new notebook 
+                Intent intent = new Intent(MainActivity.this, AddNotebookActivity.class);
+                startActivity(intent);
             }
         });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

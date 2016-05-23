@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             RecyclerView rvNotebooks = new RecyclerView(this);
 
             RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             rvNotebooks.setLayoutParams(params);
 
             NotebooksAdapter adapter = new NotebooksAdapter(notebooks);
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             TextView CreateNew = new TextView(this);
 
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             CreateNew.setLayoutParams(params);
             CreateNew.setText("No notebooks by the moment. Create a new one!");
 

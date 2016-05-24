@@ -1,6 +1,7 @@
 package io.github.aguilarj.notes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,19 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
         public TextView titleTextView;
         public TextView descriptionTextView;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, final Context context) {
             super(itemView);
 
             titleTextView = (TextView) itemView.findViewById(R.id.title);
             descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ShowNotesActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
     private List<Notebook> mNotebooks;
@@ -35,7 +44,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
 
         View notebookView = inflater.inflate(R.layout.item_notebook, parent, false);
 
-        return new ViewHolder(notebookView);
+        return new ViewHolder(notebookView, context);
     }
 
     @Override

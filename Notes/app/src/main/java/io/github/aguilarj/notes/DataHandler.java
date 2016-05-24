@@ -1,7 +1,7 @@
 package io.github.aguilarj.notes;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -19,28 +19,19 @@ import java.util.ArrayList;
  */
 
 public class DataHandler {
-    private Context currentContext;
+    private static final String tag = "DataHandler";
+
     private ArrayList<Notebook> mNotebooks;
     private String dataPath;
     private Boolean isLoaded;
     private class FileNames {
         public static final String NOTEBOOKS = "/Notebooks.txt";
-
     }
 
     public DataHandler(Context context) {
-        currentContext = context;
         dataPath = context.getFilesDir().toString();
         mNotebooks = new ArrayList<>();
         isLoaded = false;
-    }
-
-    private void errorMessage(String error) {
-        // TODO: 22/05/16 Look for a proper way of dealing with errors
-        AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
-        builder.setMessage(error);
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     private void loadNotebooks() {
@@ -53,7 +44,8 @@ public class DataHandler {
             try {
                 Files.write("Empty", notebooksFile, Charsets.UTF_8);
             } catch (IOException exception) {
-                errorMessage("Error while creating notebooks' file: " + exception.toString());
+                exception.printStackTrace();
+                Log.e(tag, "Error while writing to notebooks' file");
             }
 
         }
@@ -61,7 +53,9 @@ public class DataHandler {
         try {
             notebooksString = Files.toString(notebooksFile, Charsets.UTF_8);
         } catch (IOException exception) {
-            errorMessage("Error while trying to open notebooks: " + exception.toString());
+            exception.printStackTrace();
+            Log.e(tag, "Error while converting notebook file to string");
+
         }
 
         if (!notebooksString.equals("Empty")) {
@@ -77,9 +71,11 @@ public class DataHandler {
                 }
 
             } catch (JSONException exception) {
-                errorMessage("Error while parsing notebooks' data: " + exception.toString());
+                exception.printStackTrace();
+                Log.e(tag, "Error while parsing notebooks' data");
             }
         }
+        Log.i(tag, "Notebooks' data loaded successfully");
     }
 
     public ArrayList<Notebook> getNotebooks() {
@@ -89,4 +85,41 @@ public class DataHandler {
         }
         return mNotebooks;
     }
+
+    public void addNotebook(Notebook notebook) {
+        // Adding notebook to our local array
+        mNotebooks.add(notebook);
+
+        // Adding notebook to file
+        String notebooksString = new String();
+        File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
+        try {
+            notebooksString = Files.toString(notebooksFile, Charsets.UTF_8);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while converting notebook file to string");
+        }
+        try {
+            JSONObject newObject = new JSONObject();
+            JSONArray data = notebooksString.equals("Empty") ? new JSONArray() : new JSONArray(notebooksString);
+            newObject.put("title", notebook.getTitle());
+            newObject.put("description", notebook.getDescription());
+
+            data.put(newObject);
+
+            try {
+                Files.write(data.toString(), notebooksFile, Charsets.UTF_8);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                Log.e(tag, "Error while writing to notebooks' file");
+            }
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while parsing notebooks' data");
+
+        }
+        Log.i(tag, "A new notebook was successfully");
+    }
+
 }

@@ -2,17 +2,18 @@
 <resources>
     <string name="app_name">Notes</string>
 
+    <!--MainActivity.java-->
     <string name="no_notebooks_message">No notebooks by the moment. Create a new one!</string>
 
+    <!--activity_add_notebook.xml-->
     <string name="add_notebook_title">Title</string>
     <string name="add_notebook_description">Description</string>
-    <string name="add_notebook_add_button">Add</string>
 
+    <!--menu_add.xml and menu_main.xml-->
     <string name="action_create">Create</string>
     <string name="action_settings">Settings</string>
 
-
-
-
+    <!--AddNotebookActivity.java-->
+    <string name="no_title_description">"You need to add both a title and a description to create a new notebook"</string>
 </resources>
 

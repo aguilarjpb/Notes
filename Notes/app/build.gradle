@@ -31,4 +31,5 @@ dependencies {
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile 'com.google.guava:guava:19.0'
+    compile 'org.apache.commons:commons-lang3:3.4'
 }

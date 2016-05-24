@@ -25,5 +25,6 @@ public class Data {
     public ArrayList<Notebook> getNotebooks() {
         return mData.getNotebooks();
     }
+    public void addNotebook(Notebook notebook) { mData.addNotebook(notebook);}
 
 }

@@ -12,26 +12,36 @@ import java.util.List;
 
 public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.ViewHolder> {
 
+    private List<Notebook> mNotebooks;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
+        private Context currentContex;
 
         public ViewHolder(View itemView, final Context context) {
             super(itemView);
 
-            titleTextView = (TextView) itemView.findViewById(R.id.title);
-            descriptionTextView = (TextView) itemView.findViewById(R.id.description);
+            titleTextView = (TextView) itemView.findViewById(R.id.notebook_title);
+            descriptionTextView = (TextView) itemView.findViewById(R.id.notebook_description);
+            currentContex = context;
+        }
+
+        public void bind(Notebook notebook, final Integer position) {
+            titleTextView.setText(notebook.getTitle());
+            descriptionTextView.setText(notebook.getDescription());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, ShowNotesActivity.class);
-                    context.startActivity(intent);
+                    Intent intent = new Intent(currentContex, ShowNotesActivity.class);
+                    intent.putExtra("notebookId", position);
+                    currentContex.startActivity(intent);
                 }
             });
         }
     }
-    private List<Notebook> mNotebooks;
+
 
     public NotebooksAdapter(List<Notebook> notebooks) {
         mNotebooks = notebooks;
@@ -49,13 +59,8 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
 
     @Override
     public void onBindViewHolder(NotebooksAdapter.ViewHolder viewHolder, int position) {
-        Notebook notebook = mNotebooks.get(position);
+        viewHolder.bind(mNotebooks.get(position), position);
 
-        TextView titleTextView = viewHolder.titleTextView;
-        titleTextView.setText(notebook.getTitle());
-
-        TextView descriptionTextView = viewHolder.descriptionTextView;
-        descriptionTextView.setText(notebook.getDescription());
     }
 
     @Override

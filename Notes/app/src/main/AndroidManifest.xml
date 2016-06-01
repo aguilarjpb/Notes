@@ -22,12 +22,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ShowNotesActivity"
+        <activity
+            android:name=".ShowNotesActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
-
+        </activity>
+        <activity
+            android:name=".AddNoteActivity"
+            android:parentActivityName=".ShowNotesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShowNotesActivity" />
         </activity>
     </application>
 

@@ -25,6 +25,18 @@ public class Data {
     public ArrayList<Notebook> getNotebooks() {
         return mData.getNotebooks();
     }
-    public void addNotebook(Notebook notebook) { mData.addNotebook(notebook);}
+
+    public void addNotebook(Notebook notebook) {
+        mData.addNotebook(notebook);
+    }
+
+    public ArrayList<Note> getNotes(Integer notebookId) {
+        return mData.getNotes(notebookId);
+    }
+
+    public void addNote(Note note, Integer notebookId) {
+        mData.addNote(note, notebookId);
+    }
+
 
 }

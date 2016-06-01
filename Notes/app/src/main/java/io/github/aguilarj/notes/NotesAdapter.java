@@ -29,7 +29,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             currentContex = context;
         }
 
-        public void bind(Note Note, final Integer position) {
+        public void bind(Note Note, final int position) {
             titleTextView.setText(Note.getTitle());
             contentTextView.setText(Note.getContent());
 

@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 public class AddNoteActivity extends AppCompatActivity {
     private static final Boolean SUCCESS = true;
     private static final Boolean FAIL = false;
-    private Integer notebookId;
+    private int notebookId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

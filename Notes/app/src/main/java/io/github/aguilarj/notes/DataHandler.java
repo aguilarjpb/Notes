@@ -25,7 +25,7 @@ public class DataHandler {
     private String dataPath;
     private Boolean isLoaded;
     private class FileNames {
-        public static final String NOTEBOOKS = "/Notebooks.txt";
+        public static final String NOTEBOOKS = "/data.txt";
     }
 
     public DataHandler(Context context) {
@@ -34,29 +34,55 @@ public class DataHandler {
         isLoaded = false;
     }
 
-    private void loadNotebooks() {
-        File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
-        String notebooksString = new String();
 
+    /*
+        Converts fileName file in dataPath to string.
+        If file does not exists, it is created.
+     */
 
-        if (!notebooksFile.exists()) {
-            notebooksFile = new File(dataPath, FileNames.NOTEBOOKS);
+    private String getFileAsString(String fileName) {
+        File file = new File(dataPath + fileName);
+
+        if (!file.exists()) {
+            file = new File(dataPath, fileName);
             try {
-                Files.write("Empty", notebooksFile, Charsets.UTF_8);
+                Files.write("Empty", file, Charsets.UTF_8);
             } catch (IOException exception) {
                 exception.printStackTrace();
-                Log.e(tag, "Error while writing to notebooks' file");
+                Log.e(tag, "Error while writing to file");
             }
 
         }
 
+        String fileString = new String();
         try {
-            notebooksString = Files.toString(notebooksFile, Charsets.UTF_8);
+            fileString = Files.toString(file, Charsets.UTF_8);
         } catch (IOException exception) {
             exception.printStackTrace();
-            Log.e(tag, "Error while converting notebook file to string");
-
+            Log.e(tag, "Error while converting file to string");
         }
+        return fileString;
+    }
+
+    /*
+        Writes a JSONArray as a String to a file
+     */
+    private void writeJSONtoFile(JSONArray data, File notebooksFile) {
+        String toWrite = data.length() == 0 ? "Empty" : data.toString();
+        try {
+            Files.write(toWrite, notebooksFile, Charsets.UTF_8);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while writing to notebooks' file");
+        }
+    }
+    /*
+        Loads notebooks from Filenames.NOTEBOOKS in dataPath.
+        It just parses a JSONArray.
+
+     */
+    private void loadNotebooks() {
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
 
         if (!notebooksString.equals("Empty")) {
             try {
@@ -86,6 +112,9 @@ public class DataHandler {
         Log.i(tag, "Notebooks' data loaded successfully");
     }
 
+    /*
+        Returns notebooks array. It loads them from file if it is necessary.
+     */
     public ArrayList<Notebook> getNotebooks() {
         if (!isLoaded) {
             loadNotebooks();
@@ -94,19 +123,17 @@ public class DataHandler {
         return mNotebooks;
     }
 
+    /*
+        Adds a new notebook in both the local copy and file.
+     */
     public void addNotebook(Notebook notebook) {
         // Adding notebook to our local array
         mNotebooks.add(notebook);
 
         // Adding notebook to file
-        String notebooksString = new String();
         File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
-        try {
-            notebooksString = Files.toString(notebooksFile, Charsets.UTF_8);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            Log.e(tag, "Error while converting notebook file to string");
-        }
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
+
         try {
             JSONObject newObject = new JSONObject();
             JSONArray data = notebooksString.equals("Empty") ? new JSONArray() : new JSONArray(notebooksString);
@@ -115,13 +142,7 @@ public class DataHandler {
             newObject.put("notes", new JSONArray());
 
             data.put(newObject);
-
-            try {
-                Files.write(data.toString(), notebooksFile, Charsets.UTF_8);
-            } catch (IOException exception) {
-                exception.printStackTrace();
-                Log.e(tag, "Error while writing to notebooks' file");
-            }
+            writeJSONtoFile(data, notebooksFile);
 
         } catch (JSONException exception) {
             exception.printStackTrace();
@@ -131,23 +152,60 @@ public class DataHandler {
         Log.i(tag, "A new notebook was added successfully");
     }
 
-    public ArrayList<Note> getNotes(Integer notebookId) {
+    /*
+        Private function to remove a element from a JSONArray.
+        This was implemented because the remove method is not compatible with the
+        current min API level (15).
+     */
+    private JSONArray removeFromJSONArray(JSONArray array, int id) {
+        ArrayList<JSONObject> list = new ArrayList<>();
+        try {
+            for (int i = 0; i != array.length(); i++) {
+                list.add(array.getJSONObject(i));
+            }
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while removing element from a JSONArray");
+        }
+        list.remove(id);
+        return new JSONArray(list);
+    }
+
+    /*
+        Deletes a notebook in both the local copy and file.
+     */
+    public void deleteNotebook(int notebookId) {
+        // Deleting from our local array
+        mNotebooks.remove(notebookId);
+
+        // Deleting from file
+        File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
+
+        try {
+            JSONArray data = removeFromJSONArray(new JSONArray(notebooksString), notebookId);
+            writeJSONtoFile(data, notebooksFile);
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while deleting a notebook");
+
+        }
+        Log.i(tag, "A notebook was deleted successfully");
+    }
+
+    public ArrayList<Note> getNotes(int notebookId) {
         return mNotebooks.get(notebookId).getNotes();
     }
 
-    public void addNote(Note note, Integer notebookId) {
+    public void addNote(Note note, int notebookId) {
         // Adding note to our local array
         mNotebooks.get(notebookId).addNote(note);
 
         // Adding note to file
-        String notebooksString = new String();
         File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
-        try {
-            notebooksString = Files.toString(notebooksFile, Charsets.UTF_8);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-            Log.e(tag, "Error while converting notebook file to string");
-        }
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
+
         try {
             JSONArray data = new JSONArray(notebooksString);
             JSONObject notebook = data.getJSONObject(notebookId);
@@ -159,12 +217,7 @@ public class DataHandler {
 
             notebook.accumulate("notes", noteObject);
 
-            try {
-                Files.write(data.toString(), notebooksFile, Charsets.UTF_8);
-            } catch (IOException exception) {
-                exception.printStackTrace();
-                Log.e(tag, "Error while writing to notebooks' file");
-            }
+            writeJSONtoFile(data, notebooksFile);
 
         } catch (JSONException exception) {
             exception.printStackTrace();

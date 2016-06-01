@@ -32,7 +32,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
             optionsButton = (Button) itemView.findViewById(R.id.options_button);
         }
 
-        public void bind(Notebook notebook, final Integer position) {
+        public void bind(Notebook notebook, final int position) {
             titleTextView.setText(notebook.getTitle());
             descriptionTextView.setText(notebook.getDescription());
 

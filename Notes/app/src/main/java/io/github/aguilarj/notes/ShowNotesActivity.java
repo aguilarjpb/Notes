@@ -40,7 +40,7 @@ public class ShowNotesActivity extends AppCompatActivity {
         TextView noNotes = (TextView) findViewById(R.id.no_notes);
 
         Data data = Data.getInstance(ShowNotesActivity.this);
-        final Integer notebookId = intent.getIntExtra("notebookId", -1);
+        final int notebookId = intent.getIntExtra("notebookId", -1);
 
         Preconditions.checkArgument(notebookId != -1);
         ArrayList<Note> notes = data.getNotes(notebookId);

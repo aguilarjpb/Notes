@@ -30,11 +30,11 @@ public class Data {
         mData.addNotebook(notebook);
     }
 
-    public ArrayList<Note> getNotes(Integer notebookId) {
+    public ArrayList<Note> getNotes(int notebookId) {
         return mData.getNotes(notebookId);
     }
 
-    public void addNote(Note note, Integer notebookId) {
+    public void addNote(Note note, int notebookId) {
         mData.addNote(note, notebookId);
     }
 

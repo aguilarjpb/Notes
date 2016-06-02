@@ -7,6 +7,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,6 +21,10 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 
 public class ShowNotesActivity extends AppCompatActivity {
+    final private int GRID = 0;
+    final private int LIST = 1;
+    private int CURRENT_VIEW;
+    private RecyclerView rvNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +42,8 @@ public class ShowNotesActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
 
         RelativeLayout showNotesLayout = (RelativeLayout) findViewById(R.id.show_notes_layout);
-        RecyclerView rvNotes = (RecyclerView) findViewById(R.id.notes_list);
         TextView noNotes = (TextView) findViewById(R.id.no_notes);
+        rvNotes = (RecyclerView) findViewById(R.id.notes_list);
 
         Data data = Data.getInstance(ShowNotesActivity.this);
         final int notebookId = intent.getIntExtra("notebookId", -1);
@@ -55,6 +60,7 @@ public class ShowNotesActivity extends AppCompatActivity {
             NotesAdapter adapter = new NotesAdapter(notes);
             rvNotes.setAdapter(adapter);
             rvNotes.setLayoutManager(new GridLayoutManager(this, 2));
+            CURRENT_VIEW = GRID;
 
         } else {
             rvNotes.setVisibility(View.INVISIBLE);
@@ -81,6 +87,16 @@ public class ShowNotesActivity extends AppCompatActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.action_switch_view:
+                if (CURRENT_VIEW == GRID) {
+                    rvNotes.setLayoutManager(new LinearLayoutManager(this));
+                    CURRENT_VIEW = LIST;
+                } else {
+                    rvNotes.setLayoutManager(new GridLayoutManager(this, 2));
+                    CURRENT_VIEW = GRID;
+                }
+                invalidateOptionsMenu();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -89,6 +105,16 @@ public class ShowNotesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_show, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        if (CURRENT_VIEW == GRID) {
+            menu.findItem(R.id.action_switch_view).setIcon(R.drawable.ic_list);
+        } else {
+            menu.findItem(R.id.action_switch_view).setIcon(R.drawable.ic_grid);
+        }
         return true;
     }
 }

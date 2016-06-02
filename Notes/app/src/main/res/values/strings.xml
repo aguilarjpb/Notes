@@ -11,7 +11,8 @@
 
     <!--menu_add.xml and menu_main.xml-->
     <string name="action_create">Create</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
+    <string name="action_switch_view">Switch view</string>
 
     <!--AddNotebookActivity.java-->
     <string name="no_title_description">"You need to add both a title and a description to create a new notebook"</string>

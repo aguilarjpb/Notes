@@ -30,6 +30,10 @@ public class Data {
         mData.addNotebook(notebook);
     }
 
+    public void deleteNotebook(int notebookId) {
+        mData.deleteNotebook(notebookId);
+    }
+
     public ArrayList<Note> getNotes(int notebookId) {
         return mData.getNotes(notebookId);
     }

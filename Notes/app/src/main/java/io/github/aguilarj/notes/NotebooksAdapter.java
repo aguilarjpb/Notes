@@ -16,12 +16,23 @@ import java.util.List;
 public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.ViewHolder> {
 
     private List<Notebook> mNotebooks;
+    private Context currentContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public NotebooksAdapter(List<Notebook> notebooks) {
+        mNotebooks = notebooks;
+    }
+
+    public void delete(int position) {
+        Data data = Data.getInstance(currentContext);
+        data.deleteNotebook(position);
+        notifyItemRemoved(position);
+
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
         public Button optionsButton;
-        private Context currentContext;
 
         public ViewHolder(View itemView, final Context context) {
             super(itemView);
@@ -60,7 +71,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
                                     // data.editNotebook(position);
                                     break;
                                 case R.id.delete:
-                                    // data.deleteNotebook(position);
+                                    delete(position);
                                     break;
                                 default:
                                     break;
@@ -72,11 +83,6 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
                 }
             });
         }
-    }
-
-
-    public NotebooksAdapter(List<Notebook> notebooks) {
-        mNotebooks = notebooks;
     }
 
     @Override

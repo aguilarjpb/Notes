@@ -27,6 +27,7 @@ public class AddNotebookActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Preconditions.checkArgument(actionBar != null);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

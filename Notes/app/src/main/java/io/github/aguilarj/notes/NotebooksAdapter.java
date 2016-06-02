@@ -64,11 +64,8 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
-                            // Data data = Data.getInstance(currentContext);
                             switch (item.getItemId()) {
-                                // TODO: 01/06/16 Edit and delete notebook feature
                                 case R.id.edit:
-                                    // data.editNotebook(position);
                                     break;
                                 case R.id.delete:
                                     delete(getAdapterPosition());

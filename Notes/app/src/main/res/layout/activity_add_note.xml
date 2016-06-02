@@ -15,7 +15,8 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Add a new note"/>
+        app:title="Add a new note"
+        app:titleTextColor="@android:color/white"/>
 
     <LinearLayout
         android:layout_below="@id/add_note_toolbar"

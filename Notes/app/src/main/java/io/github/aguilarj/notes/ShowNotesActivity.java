@@ -34,6 +34,7 @@ public class ShowNotesActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Preconditions.checkArgument(actionBar != null);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
 
         RelativeLayout showNotesLayout = (RelativeLayout) findViewById(R.id.show_notes_layout);
         RecyclerView rvNotes = (RecyclerView) findViewById(R.id.notes_list);

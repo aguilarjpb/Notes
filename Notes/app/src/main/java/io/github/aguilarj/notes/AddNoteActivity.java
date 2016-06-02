@@ -31,6 +31,7 @@ public class AddNoteActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Preconditions.checkArgument(actionBar != null);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
 
         Intent intent = getIntent();
         notebookId = intent.getIntExtra("notebookId", -1);

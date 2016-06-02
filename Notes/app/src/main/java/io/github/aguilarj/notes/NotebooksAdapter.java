@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
-        public Button optionsButton;
+        public ImageView optionsButton;
 
         public ViewHolder(View itemView, final Context context) {
             super(itemView);
@@ -40,7 +40,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
             titleTextView = (TextView) itemView.findViewById(R.id.notebook_title);
             descriptionTextView = (TextView) itemView.findViewById(R.id.notebook_description);
             currentContext = context;
-            optionsButton = (Button) itemView.findViewById(R.id.options_button);
+            optionsButton = (ImageView) itemView.findViewById(R.id.options_button);
         }
 
         public void bind(Notebook notebook, final int position) {

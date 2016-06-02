@@ -57,7 +57,7 @@ public class ShowNotesActivity extends AppCompatActivity {
 
         if (!notes.isEmpty()) {
             noNotes.setVisibility(View.INVISIBLE);
-            NotesAdapter adapter = new NotesAdapter(notes);
+            NotesAdapter adapter = new NotesAdapter(notes, notebookId);
             rvNotes.setAdapter(adapter);
             rvNotes.setLayoutManager(new GridLayoutManager(this, 2));
             CURRENT_VIEW = GRID;

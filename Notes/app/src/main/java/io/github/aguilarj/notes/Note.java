@@ -19,4 +19,12 @@ public class Note {
     public String getContent() {
         return mContent;
     }
+
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public void setContent(String content) {
+        mContent = content;
+    }
 }

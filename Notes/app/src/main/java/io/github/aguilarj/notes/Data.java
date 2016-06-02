@@ -50,5 +50,9 @@ public class Data {
         mData.addNote(note, notebookId);
     }
 
+    public void deleteNote(int notebookId, int noteId) {
+        mData.deleteNote(notebookId, noteId);
+    }
+
 
 }

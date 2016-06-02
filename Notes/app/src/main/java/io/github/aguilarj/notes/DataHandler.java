@@ -259,4 +259,31 @@ public class DataHandler {
         }
         Log.i(tag, "A new note was added successfully");
     }
+
+    public void deleteNote(int notebookId, int noteId) {
+        Notebook toModify = mNotebooks.get(notebookId);
+
+        toModify.deleteNote(noteId);
+
+        mNotebooks.set(notebookId, toModify);
+
+        File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
+
+        try {
+            JSONArray data = new JSONArray(notebooksString);
+            JSONObject toEdit = data.getJSONObject(notebookId);
+
+            toEdit.put("notes", removeFromJSONArray(toEdit.getJSONArray("notes"), noteId));
+
+            data.put(notebookId, toEdit);
+            writeJSONtoFile(data, notebooksFile);
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while deleting a note");
+
+        }
+        Log.i(tag, "A note was deleted successfully");
+    }
 }

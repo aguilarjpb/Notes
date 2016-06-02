@@ -33,7 +33,19 @@ public class Notebook {
         return mNotes;
     }
 
+    public Note getNote(int noteId) {
+        return mNotes.get(noteId);
+    }
+
+    public void setNote(int noteId, Note note) {
+        mNotes.set(noteId, note);
+    }
+
     public void addNote(Note note) {
         mNotes.add(note);
+    }
+
+    public void deleteNote(int noteId) {
+        mNotes.remove(noteId);
     }
 }

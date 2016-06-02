@@ -22,6 +22,10 @@ public class Data {
         return mInstance;
     }
 
+    public Notebook getNotebook(int notebookId) {
+        return mData.getNotebook(notebookId);
+    }
+
     public ArrayList<Notebook> getNotebooks() {
         return mData.getNotebooks();
     }

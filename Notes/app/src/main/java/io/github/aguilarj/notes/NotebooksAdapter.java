@@ -51,7 +51,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(currentContext, ShowNotesActivity.class);
-                    intent.putExtra("notebookId", position);
+                    intent.putExtra("notebookId", getAdapterPosition());
                     currentContext.startActivity(intent);
                 }
             });
@@ -71,7 +71,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
                                     // data.editNotebook(position);
                                     break;
                                 case R.id.delete:
-                                    delete(position);
+                                    delete(getAdapterPosition());
                                     break;
                                 default:
                                     break;

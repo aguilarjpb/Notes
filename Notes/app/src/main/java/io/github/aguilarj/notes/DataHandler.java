@@ -123,6 +123,10 @@ public class DataHandler {
         return mNotebooks;
     }
 
+    public Notebook getNotebook(int notebookId) {
+        return mNotebooks.get(notebookId);
+    }
+
     /*
         Adds a new notebook in both the local copy and file.
      */

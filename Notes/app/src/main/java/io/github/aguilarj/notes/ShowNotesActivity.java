@@ -42,6 +42,8 @@ public class ShowNotesActivity extends AppCompatActivity {
         Data data = Data.getInstance(ShowNotesActivity.this);
         final int notebookId = intent.getIntExtra("notebookId", -1);
 
+        actionBar.setTitle(data.getNotebook(notebookId).getTitle());
+
         Preconditions.checkArgument(notebookId != -1);
         ArrayList<Note> notes = data.getNotes(notebookId);
 

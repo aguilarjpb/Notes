@@ -36,7 +36,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShowNotesActivity" />
         </activity>
-        <activity android:name=".About"></activity>
+        <activity
+            android:name=".About"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ package io.github.aguilarj.notes;
  * Created by aguilarjp on 01/06/16.
  */
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         Data data = Data.getInstance(currentContext);
         data.deleteNote(mNotebookId, position);
         notifyItemRemoved(position);
+    }
+
+    public void edit(int position) {
+        Intent intent = new Intent(currentContext, NoteActivity.class);
+        intent.putExtra("notebookId", mNotebookId);
+        intent.putExtra("REQUEST", 1); // EDIT
+        intent.putExtra("POSITION", position);
+        currentContext.startActivity(intent);
+        notifyItemChanged(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,7 +79,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                    // edit(getAdapterPosition());
+                                    edit(getAdapterPosition());
                                     break;
                                 case R.id.delete:
                                     delete(getAdapterPosition());

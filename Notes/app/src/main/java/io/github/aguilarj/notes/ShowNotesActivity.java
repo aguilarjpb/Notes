@@ -73,8 +73,9 @@ public class ShowNotesActivity extends AppCompatActivity {
         add_notebook_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ShowNotesActivity.this, AddNoteActivity.class);
+                Intent intent = new Intent(ShowNotesActivity.this, NoteActivity.class);
                 intent.putExtra("notebookId", notebookId);
+                intent.putExtra("REQUEST", 0); // ADD
                 startActivity(intent);
             }
         });

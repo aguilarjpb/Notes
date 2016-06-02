@@ -30,7 +30,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".AddNoteActivity"
+            android:name=".NoteActivity"
             android:parentActivityName=".ShowNotesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

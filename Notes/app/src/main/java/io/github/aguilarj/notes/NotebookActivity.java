@@ -40,22 +40,22 @@ public class NotebookActivity extends AppCompatActivity {
         REQUEST = intent.getIntExtra("REQUEST", -1);
         POSITION = intent.getIntExtra("POSITION", -1);
 
-        EditText add_notebook_title = (EditText) findViewById(R.id.request_notebook_title);
-        EditText add_notebook_description = (EditText) findViewById(R.id.request_notebook_description);
+        EditText notebook_title = (EditText) findViewById(R.id.request_notebook_title);
+        EditText notebook_description = (EditText) findViewById(R.id.request_notebook_description);
 
-        Preconditions.checkArgument(add_notebook_title != null && add_notebook_description != null);
+        Preconditions.checkArgument(notebook_title != null && notebook_description != null);
         if (REQUEST == ADD) {
             actionBar.setTitle("Add a new notebook");
-            add_notebook_title.setHint("Title");
-            add_notebook_description.setHint("Description");
+            notebook_title.setHint("Title");
+            notebook_description.setHint("Description");
         }
         if (REQUEST == EDIT) {
             actionBar.setTitle("Edit notebook");
 
             Data data = Data.getInstance(this);
             Notebook notebook = data.getNotebook(POSITION);
-            add_notebook_title.setText(notebook.getTitle());
-            add_notebook_description.setText(notebook.getDescription());
+            notebook_title.setText(notebook.getTitle());
+            notebook_description.setText(notebook.getDescription());
         }
 
 
@@ -88,13 +88,13 @@ public class NotebookActivity extends AppCompatActivity {
 
     private Boolean processRequest() {
         Data data = Data.getInstance(this);
-        EditText add_notebook_title = (EditText) findViewById(R.id.request_notebook_title);
-        EditText add_notebook_description = (EditText) findViewById(R.id.request_notebook_description);
+        EditText notebook_title = (EditText) findViewById(R.id.request_notebook_title);
+        EditText notebook_description = (EditText) findViewById(R.id.request_notebook_description);
 
-        Preconditions.checkArgument(add_notebook_title != null && add_notebook_description != null);
+        Preconditions.checkArgument(notebook_title != null && notebook_description != null);
 
-        String title = add_notebook_title.getText().toString();
-        String description = add_notebook_description.getText().toString();
+        String title = notebook_title.getText().toString();
+        String description = notebook_description.getText().toString();
 
         if (StringUtils.isBlank(title) || StringUtils.isBlank(description)) {
             showMessage(this.getString(R.string.no_title_description));

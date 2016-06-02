@@ -25,7 +25,7 @@
     <string name="add_note_content">Content</string>
 
     <!--NotebookActivity.java-->
-    <string name="no_title_content">"You need to add both a title and some content to create a new note"</string>
+    <string name="no_title_content">"You need to add both a title and some content"</string>
 
 </resources>
 

@@ -54,5 +54,9 @@ public class Data {
         mData.deleteNote(notebookId, noteId);
     }
 
+    public void editNote(int notebookId, int noteId, String title, String content) {
+        mData.editNote(notebookId, noteId, title, content);
+    }
+
 
 }

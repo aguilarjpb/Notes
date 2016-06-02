@@ -36,6 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShowNotesActivity" />
         </activity>
+        <activity android:name=".About"></activity>
     </application>
 
 </manifest>

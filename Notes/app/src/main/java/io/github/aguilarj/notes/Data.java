@@ -38,6 +38,10 @@ public class Data {
         mData.deleteNotebook(notebookId);
     }
 
+    public void editNotebook(int notebookId, String title, String description) {
+        mData.editNotebook(notebookId, title, description);
+    }
+
     public ArrayList<Note> getNotes(int notebookId) {
         return mData.getNotes(notebookId);
     }

@@ -1,5 +1,6 @@
 package io.github.aguilarj.notes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -9,32 +10,61 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.common.base.Preconditions;
+
 import org.apache.commons.lang3.StringUtils;
 
-public class AddNotebookActivity extends AppCompatActivity {
+public class NotebookActivity extends AppCompatActivity {
+    private static final int ADD = 0;
+    private static final int EDIT = 1;
     private static final Boolean SUCCESS = true;
     private static final Boolean FAIL = false;
+    private int REQUEST;
+    private int POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_notebook);
+        setContentView(R.layout.activity_notebook);
 
-        Toolbar addNotebookToolbar = (Toolbar) findViewById(R.id.add_notebook_toolbar);
+        Toolbar addNotebookToolbar = (Toolbar) findViewById(R.id.notebook_toolbar);
         setSupportActionBar(addNotebookToolbar);
 
         ActionBar actionBar = getSupportActionBar();
         Preconditions.checkArgument(actionBar != null);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+
+        Intent intent = getIntent();
+        REQUEST = intent.getIntExtra("REQUEST", -1);
+        POSITION = intent.getIntExtra("POSITION", -1);
+
+        EditText add_notebook_title = (EditText) findViewById(R.id.request_notebook_title);
+        EditText add_notebook_description = (EditText) findViewById(R.id.request_notebook_description);
+
+        Preconditions.checkArgument(add_notebook_title != null && add_notebook_description != null);
+        if (REQUEST == ADD) {
+            actionBar.setTitle("Add a new notebook");
+            add_notebook_title.setHint("Title");
+            add_notebook_description.setHint("Description");
+        }
+        if (REQUEST == EDIT) {
+            actionBar.setTitle("Edit notebook");
+
+            Data data = Data.getInstance(this);
+            Notebook notebook = data.getNotebook(POSITION);
+            add_notebook_title.setText(notebook.getTitle());
+            add_notebook_description.setText(notebook.getDescription());
+        }
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_create:
-                Boolean result = addNotebook();
-                if (result == SUCCESS) {
+                if (processRequest() == SUCCESS) {
                     NavUtils.navigateUpFromSameTask(this);
                 }
                 return true;
@@ -56,10 +86,10 @@ public class AddNotebookActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private Boolean addNotebook() {
+    private Boolean processRequest() {
         Data data = Data.getInstance(this);
-        EditText add_notebook_title = (EditText) findViewById(R.id.add_notebook_title);
-        EditText add_notebook_description = (EditText) findViewById(R.id.add_notebook_description);
+        EditText add_notebook_title = (EditText) findViewById(R.id.request_notebook_title);
+        EditText add_notebook_description = (EditText) findViewById(R.id.request_notebook_description);
 
         Preconditions.checkArgument(add_notebook_title != null && add_notebook_description != null);
 
@@ -71,7 +101,15 @@ public class AddNotebookActivity extends AppCompatActivity {
             return FAIL;
         }
 
-        data.addNotebook(new Notebook(title, description));
+        switch (REQUEST) {
+            case ADD:
+                data.addNotebook(new Notebook(title, description));
+                break;
+            case EDIT:
+                data.editNotebook(POSITION, title, description);
+                break;
+        }
+
         return SUCCESS;
     }
 }

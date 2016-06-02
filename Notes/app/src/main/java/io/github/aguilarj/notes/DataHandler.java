@@ -198,6 +198,35 @@ public class DataHandler {
         Log.i(tag, "A notebook was deleted successfully");
     }
 
+    public void editNotebook(int notebookId, String title, String description) {
+        Notebook toModify = mNotebooks.get(notebookId);
+
+        toModify.setTitle(title);
+        toModify.setDescription(description);
+
+        mNotebooks.set(notebookId, toModify);
+
+        File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
+
+        try {
+            JSONArray data = new JSONArray(notebooksString);
+            JSONObject toEdit = data.getJSONObject(notebookId);
+
+            toEdit.put("title", title);
+            toEdit.put("description", description);
+
+            data.put(notebookId, toEdit);
+            writeJSONtoFile(data, notebooksFile);
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while editing a notebook");
+
+        }
+        Log.i(tag, "A notebook was edited successfully");
+    }
+
     public ArrayList<Note> getNotes(int notebookId) {
         return mNotebooks.get(notebookId).getNotes();
     }

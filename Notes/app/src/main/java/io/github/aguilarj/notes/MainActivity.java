@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         add_notebook_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddNotebookActivity.class);
+                Intent intent = new Intent(MainActivity.this, NotebookActivity.class);
+                intent.putExtra("REQUEST", 0); // ADD
                 startActivity(intent);
             }
         });

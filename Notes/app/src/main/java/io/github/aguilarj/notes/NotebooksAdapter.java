@@ -23,10 +23,18 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
     }
 
     public void delete(int position) {
+        // TODO: 02/06/16 Add contextual Yes/No confirmation
         Data data = Data.getInstance(currentContext);
         data.deleteNotebook(position);
         notifyItemRemoved(position);
+    }
 
+    public void edit(int position) {
+        Intent intent = new Intent(currentContext, NotebookActivity.class);
+        intent.putExtra("REQUEST", 1); // EDIT
+        intent.putExtra("POSITION", position);
+        currentContext.startActivity(intent);
+        notifyItemChanged(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -66,6 +74,7 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
+                                    edit(getAdapterPosition());
                                     break;
                                 case R.id.delete:
                                     delete(getAdapterPosition());

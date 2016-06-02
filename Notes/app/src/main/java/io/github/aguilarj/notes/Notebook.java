@@ -21,6 +21,14 @@ public class Notebook {
         return mDescription;
     }
 
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
     public ArrayList<Note> getNotes() {
         return mNotes;
     }

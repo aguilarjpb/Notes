@@ -76,6 +76,7 @@ public class DataHandler {
             Log.e(tag, "Error while writing to notebooks' file");
         }
     }
+
     /*
         Loads notebooks from Filenames.NOTEBOOKS in dataPath.
         It just parses a JSONArray.
@@ -198,6 +199,9 @@ public class DataHandler {
         Log.i(tag, "A notebook was deleted successfully");
     }
 
+    /*
+        Edits notebook's title and description
+     */
     public void editNotebook(int notebookId, String title, String description) {
         Notebook toModify = mNotebooks.get(notebookId);
 
@@ -231,6 +235,9 @@ public class DataHandler {
         return mNotebooks.get(notebookId).getNotes();
     }
 
+    /*
+        Add a new note to a notebook in both the local copy and file.
+     */
     public void addNote(Note note, int notebookId) {
         // Adding note to our local array
         mNotebooks.get(notebookId).addNote(note);
@@ -260,6 +267,9 @@ public class DataHandler {
         Log.i(tag, "A new note was added successfully");
     }
 
+    /*
+        Deletes a note from a notebook in both the local copy and file.
+     */
     public void deleteNote(int notebookId, int noteId) {
         Notebook toModify = mNotebooks.get(notebookId);
 
@@ -287,6 +297,9 @@ public class DataHandler {
         Log.i(tag, "A note was deleted successfully");
     }
 
+    /*
+        Edits note's title and content.
+     */
     public void editNote(int notebookId, int noteId, String title, String content) {
         Notebook notebook = mNotebooks.get(notebookId);
 

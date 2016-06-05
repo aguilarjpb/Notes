@@ -102,6 +102,8 @@ public class DataHandler {
                         Note note = new Note(rawNote.getString("title"), rawNote.getString("content"));
                         notebook.addNote(note);
                     }
+
+                    notebook.setDisplayMode(rawNotebook.getInt("displayMode"));
                     mNotebooks.add(notebook);
                 }
 
@@ -145,6 +147,7 @@ public class DataHandler {
             newObject.put("title", notebook.getTitle());
             newObject.put("description", notebook.getDescription());
             newObject.put("notes", new JSONArray());
+            newObject.put("displayMode", notebook.getDisplayMode());
 
             data.put(newObject);
             writeJSONtoFile(data, notebooksFile);
@@ -229,6 +232,31 @@ public class DataHandler {
 
         }
         Log.i(tag, "A notebook was edited successfully");
+    }
+
+    public void setNotebookDisplayMode(int notebookId, int displayMode) {
+        Notebook toModify = mNotebooks.get(notebookId);
+        toModify.setDisplayMode(displayMode);
+        mNotebooks.set(notebookId, toModify);
+
+        File notebooksFile = new File(dataPath + FileNames.NOTEBOOKS);
+        String notebooksString = getFileAsString(FileNames.NOTEBOOKS);
+
+        try {
+            JSONArray data = new JSONArray(notebooksString);
+            JSONObject toEdit = data.getJSONObject(notebookId);
+
+            toEdit.put("displayMode", displayMode);
+
+            data.put(notebookId, toEdit);
+            writeJSONtoFile(data, notebooksFile);
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+            Log.e(tag, "Error while editing notebook's displayMode");
+
+        }
+        Log.i(tag, "Notebook's displayMode was edited successfully");
     }
 
     public ArrayList<Note> getNotes(int notebookId) {

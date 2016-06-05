@@ -6,11 +6,13 @@ public class Notebook {
     private String mTitle;
     private String mDescription;
     private ArrayList<Note> mNotes;
+    private int mDisplayMode;
 
     public Notebook(String title, String description) {
         mTitle = title;
         mDescription = description;
         mNotes = new ArrayList<>();
+        mDisplayMode = 0; // GRID
     }
 
     public String getTitle() {
@@ -47,5 +49,12 @@ public class Notebook {
 
     public void deleteNote(int noteId) {
         mNotes.remove(noteId);
+    }
+
+    public int getDisplayMode() {
+        return mDisplayMode;
+    }
+    public void setDisplayMode(int displayMode) {
+        mDisplayMode = displayMode;
     }
 }

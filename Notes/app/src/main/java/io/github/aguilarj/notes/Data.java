@@ -42,6 +42,10 @@ public class Data {
         mData.editNotebook(notebookId, title, description);
     }
 
+    public void setNotebookDisplayMode(int notebookId, int displayMode) {
+        mData.setNotebookDisplayMode(notebookId, displayMode);
+    }
+
     public Note getNote(int notebookId, int position) {
         return mData.getNote(notebookId, position);
     }
@@ -61,6 +65,4 @@ public class Data {
     public void editNote(int notebookId, int noteId, String title, String content) {
         mData.editNote(notebookId, noteId, title, content);
     }
-
-
 }

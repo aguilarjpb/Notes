@@ -25,6 +25,7 @@ public class ShowNotesActivity extends AppCompatActivity {
     final private int LIST = 1;
     private int CURRENT_VIEW;
     private RecyclerView rvNotes;
+    private int notebookId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class ShowNotesActivity extends AppCompatActivity {
         rvNotes = (RecyclerView) findViewById(R.id.notes_list);
 
         Data data = Data.getInstance(ShowNotesActivity.this);
-        final int notebookId = intent.getIntExtra("notebookId", -1);
+        notebookId = intent.getIntExtra("notebookId", -1);
 
         actionBar.setTitle(data.getNotebook(notebookId).getTitle());
 
@@ -59,8 +60,15 @@ public class ShowNotesActivity extends AppCompatActivity {
             noNotes.setVisibility(View.INVISIBLE);
             NotesAdapter adapter = new NotesAdapter(notes, notebookId);
             rvNotes.setAdapter(adapter);
-            rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-            CURRENT_VIEW = GRID;
+
+            CURRENT_VIEW = data.getNotebook(notebookId).getDisplayMode();
+
+            if (CURRENT_VIEW == GRID) {
+                rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+            } else {
+                rvNotes.setLayoutManager(new LinearLayoutManager(this));
+            }
+
 
         } else {
             rvNotes.setVisibility(View.INVISIBLE);
@@ -90,12 +98,15 @@ public class ShowNotesActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_switch_view:
+                Data data = Data.getInstance(this);
                 if (CURRENT_VIEW == GRID) {
                     rvNotes.setLayoutManager(new LinearLayoutManager(this));
                     CURRENT_VIEW = LIST;
+                    data.setNotebookDisplayMode(notebookId, LIST);
                 } else {
                     rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                     CURRENT_VIEW = GRID;
+                    data.setNotebookDisplayMode(notebookId, GRID);
                 }
                 invalidateOptionsMenu();
                 return true;

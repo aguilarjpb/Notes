@@ -1,7 +1,9 @@
 package io.github.aguilarj.notes;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,11 +25,31 @@ public class NotebooksAdapter extends RecyclerView.Adapter<NotebooksAdapter.View
         mNotebooks = notebooks;
     }
 
-    public void delete(int position) {
-        // TODO: 02/06/16 Add contextual Yes/No confirmation
-        Data data = Data.getInstance(currentContext);
-        data.deleteNotebook(position);
-        notifyItemRemoved(position);
+    private void showMessage(String message) {
+        Toast.makeText(currentContext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void delete(final int position) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Data data = Data.getInstance(currentContext);
+                        data.deleteNotebook(position);
+                        notifyItemRemoved(position);
+                        showMessage(currentContext.getString(R.string.notebook_delete_message));
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+        builder.setTitle("Delete notebook").setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     public void edit(int position) {

@@ -1,9 +1,11 @@
 package io.github.aguilarj.notes;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -58,7 +60,7 @@ public class ShowNoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = NavUtils.getParentActivityIntent(this);
+        final Intent intent = NavUtils.getParentActivityIntent(this);
         intent.putExtra("notebookId", notebookId);
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -73,10 +75,26 @@ public class ShowNoteActivity extends AppCompatActivity {
                 startActivity(edit_intent);
                 return true;
             case R.id.action_delete:
-                Data data = Data.getInstance(this);
-                data.deleteNote(notebookId, POSITION);
-                showMessage(this.getString(R.string.delete_message));
-                startActivity(intent);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                Data data = Data.getInstance(getApplicationContext());
+                                data.deleteNote(notebookId, POSITION);
+                                showMessage(getApplicationContext().getString(R.string.note_delete_message));
+                                startActivity(intent);
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Delete note").setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

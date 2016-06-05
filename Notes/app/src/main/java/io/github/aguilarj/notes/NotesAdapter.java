@@ -4,7 +4,9 @@ package io.github.aguilarj.notes;
  * Created by aguilarjp on 01/06/16.
  */
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,10 +30,31 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         mNotebookId = notebookId;
     }
 
-    public void delete(int position) {
-        Data data = Data.getInstance(currentContext);
-        data.deleteNote(mNotebookId, position);
-        notifyItemRemoved(position);
+    private void showMessage(String message) {
+        Toast.makeText(currentContext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void delete(final int position) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Data data = Data.getInstance(currentContext);
+                        data.deleteNote(mNotebookId, position);
+                        notifyItemRemoved(position);
+                        showMessage(currentContext.getString(R.string.note_delete_message));
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+        builder.setTitle("Delete note").setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     public void edit(int position) {

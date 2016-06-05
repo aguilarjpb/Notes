@@ -63,9 +63,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Intent intent = new Intent(currentContex, ShowFullNoteActivity.class);
-//                    intent.putExtra("NoteId", position);
-//                    currentContex.startActivity(intent);
+                    Intent intent = new Intent(currentContext, ShowNoteActivity.class);
+                    intent.putExtra("notebookId", mNotebookId);
+                    intent.putExtra("POSITION", position);
+                    currentContext.startActivity(intent);
                 }
             });
 

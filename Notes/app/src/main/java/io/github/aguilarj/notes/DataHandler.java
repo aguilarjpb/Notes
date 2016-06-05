@@ -235,6 +235,10 @@ public class DataHandler {
         return mNotebooks.get(notebookId).getNotes();
     }
 
+    public Note getNote(int notebookId, int position) {
+        return mNotebooks.get(notebookId).getNote(position);
+    }
+
     /*
         Add a new note to a notebook in both the local copy and file.
      */
@@ -333,9 +337,9 @@ public class DataHandler {
 
         } catch (JSONException exception) {
             exception.printStackTrace();
-            Log.e(tag, "Error while deleting a note");
+            Log.e(tag, "Error while editing a note");
 
         }
-        Log.i(tag, "A note was deleted successfully");
+        Log.i(tag, "A note was edited successfully");
     }
 }

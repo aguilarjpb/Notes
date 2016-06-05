@@ -6,9 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,7 +59,7 @@ public class ShowNotesActivity extends AppCompatActivity {
             noNotes.setVisibility(View.INVISIBLE);
             NotesAdapter adapter = new NotesAdapter(notes, notebookId);
             rvNotes.setAdapter(adapter);
-            rvNotes.setLayoutManager(new GridLayoutManager(this, 2));
+            rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             CURRENT_VIEW = GRID;
 
         } else {
@@ -76,6 +76,7 @@ public class ShowNotesActivity extends AppCompatActivity {
                 Intent intent = new Intent(ShowNotesActivity.this, NoteActivity.class);
                 intent.putExtra("notebookId", notebookId);
                 intent.putExtra("REQUEST", 0); // ADD
+                intent.putExtra("FROM_SHOW_NOTES", true);
                 startActivity(intent);
             }
         });
@@ -93,7 +94,7 @@ public class ShowNotesActivity extends AppCompatActivity {
                     rvNotes.setLayoutManager(new LinearLayoutManager(this));
                     CURRENT_VIEW = LIST;
                 } else {
-                    rvNotes.setLayoutManager(new GridLayoutManager(this, 2));
+                    rvNotes.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                     CURRENT_VIEW = GRID;
                 }
                 invalidateOptionsMenu();
@@ -105,7 +106,7 @@ public class ShowNotesActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_show, menu);
+        getMenuInflater().inflate(R.menu.menu_show_notes, menu);
         return true;
     }
 

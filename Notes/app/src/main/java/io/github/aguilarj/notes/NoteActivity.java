@@ -1,10 +1,10 @@
 package io.github.aguilarj.notes;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +23,9 @@ public class NoteActivity extends AppCompatActivity {
     private int REQUEST;
     private int POSITION;
     private int notebookId;
+    private Boolean FROM_SHOW_NOTES;
+    private Boolean FROM_SHOW_NOTE;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,9 @@ public class NoteActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
 
         Intent intent = getIntent();
+        FROM_SHOW_NOTES = intent.getBooleanExtra("FROM_SHOW_NOTES", false);
+        FROM_SHOW_NOTE = intent.getBooleanExtra("FROM_SHOW_NOTE", false);
+
         notebookId = intent.getIntExtra("notebookId", -1);
 
         Preconditions.checkArgument(notebookId != -1);
@@ -55,6 +61,8 @@ public class NoteActivity extends AppCompatActivity {
             notebook_content.setHint("Content");
         }
         if (REQUEST == EDIT) {
+            Preconditions.checkArgument(POSITION != -1);
+
             actionBar.setTitle("Edit note");
 
             Data data = Data.getInstance(this);
@@ -69,16 +77,24 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = NavUtils.getParentActivityIntent(this);
-        intent.putExtra("notebookId", notebookId);
+        Intent intent_show_notes = NavUtils.getParentActivityIntent(this);
+        intent_show_notes.putExtra("notebookId", notebookId);
         switch (item.getItemId()) {
             case R.id.action_create:
                 if (processRequest() == SUCCESS) {
-                    startActivity(intent);
+                    if(FROM_SHOW_NOTES) {
+                        startActivity(intent_show_notes);
+                    }
+                    if (FROM_SHOW_NOTE) {
+                        Intent intent_show_note = new Intent(this, ShowNoteActivity.class);
+                        intent_show_note.putExtra("notebookId", notebookId);
+                        intent_show_note.putExtra("POSITION", POSITION);
+                        startActivity(intent_show_note);
+                    }
                 }
                 return true;
             case android.R.id.home:
-                startActivity(intent);
+                startActivity(intent_show_notes);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

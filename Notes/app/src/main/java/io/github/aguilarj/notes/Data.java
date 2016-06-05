@@ -42,6 +42,10 @@ public class Data {
         mData.editNotebook(notebookId, title, description);
     }
 
+    public Note getNote(int notebookId, int position) {
+        return mData.getNote(notebookId, position);
+    }
+
     public ArrayList<Note> getNotes(int notebookId) {
         return mData.getNotes(notebookId);
     }

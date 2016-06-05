@@ -34,10 +34,10 @@ public class ShowNoteActivity extends AppCompatActivity {
 
         Data data = Data.getInstance(ShowNoteActivity.this);
 
-        actionBar.setTitle(data.getNotebook(notebookId).getTitle());
-
         notebookId = intent.getIntExtra("notebookId", -1);
         POSITION = intent.getIntExtra("POSITION", -1);
+
+        actionBar.setTitle(data.getNotebook(notebookId).getTitle());
 
         Preconditions.checkArgument(notebookId != -1 && POSITION != -1);
 
